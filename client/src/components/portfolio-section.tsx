@@ -113,18 +113,17 @@ export function PortfolioSection({ selectedPersona }: PortfolioSectionProps) {
                     ))}
                   </div>
                   <Button
-                    className={`w-full py-2 transition-colors ${
+                    className={`w-full py-3 transition-all duration-300 transform hover:scale-105 ${
                       activePortfolio === "dev"
-                        ? "bg-matrix text-black font-mono hover:bg-matrix/80"
-                        : "bg-ceo-gold text-white font-serif hover:bg-ceo-gold/80"
+                        ? "bg-gradient-to-r from-matrix to-green-400 text-black font-mono font-bold hover:from-matrix/90 hover:to-green-400/90 shadow-lg hover:shadow-matrix/50"
+                        : "bg-gradient-to-r from-ceo-gold to-yellow-400 text-black font-serif font-bold hover:from-ceo-gold/90 hover:to-yellow-400/90 shadow-lg hover:shadow-ceo-gold/50"
                     }`}
                     onClick={() => {
-                      if (project.id === "4") {
-                        // Open CEOWrites blog in new tab
-                        window.open("https://ceowrites.dev", "_blank");
+                      if (project.url) {
+                        // Open project URL in new tab
+                        window.open(project.url, "_blank", "noopener,noreferrer");
                       } else {
-                        // For other projects, we could implement different actions
-                        console.log(`Action for project ${project.id}`);
+                        console.log(`No URL available for project ${project.id}`);
                       }
                     }}
                   >

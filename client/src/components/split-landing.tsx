@@ -106,14 +106,26 @@ export function SplitLanding({ onPersonaSelect }: SplitLandingProps) {
                       transition={{ duration: 0.6 }}
                       className="absolute top-1/2 right-8 transform -translate-y-1/2 text-right pointer-events-auto"
                     >
-                      <div className="bg-black/85 backdrop-blur-sm rounded-lg p-6 max-w-xs border border-matrix/30">
-                        <h2 className="text-2xl font-mono font-bold text-matrix mb-2"><code>&lt;Dev/&gt;</code></h2>
-                        <p className="text-sm text-gray-300 mb-4 leading-snug">Building digital solutions with modern tech</p>
-                        <div className="text-xs text-matrix font-mono mb-4 space-y-1">
-                          <div>→ Full-stack Dev</div>
-                          <div>→ Cloud Solutions</div>
+                      <div className="bg-gradient-to-br from-black/90 via-gray-900/90 to-green-900/20 backdrop-blur-md rounded-xl p-8 max-w-sm border border-matrix/40 shadow-2xl shadow-matrix/30">
+                        <h2 className="text-3xl font-mono font-bold text-matrix mb-3 tracking-wider"><code>&lt;CyberSec/&gt;</code></h2>
+                        <p className="text-sm text-gray-200 mb-6 leading-relaxed">Securing digital infrastructures with advanced cybersecurity solutions</p>
+                        <div className="text-xs text-matrix font-mono mb-6 space-y-2 bg-black/40 p-4 rounded-lg border border-matrix/20">
+                          <div className="flex items-center gap-2">
+                            <span className="text-matrix">→</span>
+                            <span className="text-gray-300">Cybersecurity & Penetration Testing</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-matrix">→</span>
+                            <span className="text-gray-300">Full-Stack Development</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-matrix">→</span>
+                            <span className="text-gray-300">Systems & Network Administration</span>
+                          </div>
                         </div>
-                        <Button className="bg-matrix text-black hover:bg-matrix/80 font-mono font-semibold px-6 py-2 text-sm" onClick={() => onPersonaSelect("dev")}>View Portfolio</Button>
+                        <Button className="bg-gradient-to-r from-matrix to-green-400 text-black hover:from-matrix/90 hover:to-green-400/90 font-mono font-bold px-8 py-3 text-sm rounded-lg shadow-lg hover:shadow-matrix/50 transition-all duration-300 transform hover:scale-105" onClick={() => onPersonaSelect("dev")}>
+                          <code>./explore_portfolio</code>
+                        </Button>
                       </div>
                     </motion.div>
                     <motion.nav
@@ -123,10 +135,19 @@ export function SplitLanding({ onPersonaSelect }: SplitLandingProps) {
                       transition={{ duration: 0.5, delay: 0.2 }}
                       className="absolute top-8 right-8 pointer-events-auto"
                     >
-                      <div className="flex items-center gap-6 bg-black/60 backdrop-blur-sm rounded-full px-6 py-3 border border-matrix/30">
-                        <button onClick={() => onPersonaSelect("dev")} className="text-matrix hover:text-matrix/80 font-mono text-sm transition-colors">Projects</button>
-                        <a href="#dev-skills" className="text-gray-300 hover:text-matrix font-mono text-sm transition-colors">Skills</a>
-                        <a href="#dev-contact" className="text-gray-300 hover:text-matrix font-mono text-sm transition-colors">Contact</a>
+                      <div className="flex items-center gap-6 bg-black/80 backdrop-blur-md rounded-full px-8 py-4 border border-matrix/50 shadow-lg shadow-matrix/20">
+                        <button onClick={() => onPersonaSelect("dev")} className="text-matrix hover:text-white hover:bg-matrix/20 font-mono text-sm transition-all duration-300 px-3 py-1 rounded-full">Projects</button>
+                        <a href="/about" className="text-gray-300 hover:text-matrix hover:bg-matrix/10 font-mono text-sm transition-all duration-300 px-3 py-1 rounded-full">About</a>
+                        <a href="/learn" className="text-gray-300 hover:text-matrix hover:bg-matrix/10 font-mono text-sm transition-all duration-300 px-3 py-1 rounded-full">Learn</a>
+                        <a href="/blog" className="text-gray-300 hover:text-matrix hover:bg-matrix/10 font-mono text-sm transition-all duration-300 px-3 py-1 rounded-full">Blog</a>
+                        <a 
+                          href="https://emmanuelos-swart-dashboard.vercel.app" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-matrix hover:text-white bg-matrix/20 hover:bg-matrix/40 font-mono text-sm font-semibold transition-all duration-300 px-4 py-2 rounded-full border border-matrix/30"
+                        >
+                          SuperExplorer
+                        </a>
                       </div>
                     </motion.nav>
                   </>
@@ -144,14 +165,26 @@ export function SplitLanding({ onPersonaSelect }: SplitLandingProps) {
                       transition={{ duration: 0.6 }}
                       className="absolute top-1/2 left-8 transform -translate-y-1/2 pointer-events-auto"
                     >
-                      <div className="bg-black/85 backdrop-blur-sm rounded-lg p-6 max-w-xs border border-ceo-gold/30">
-                        <h2 className="text-2xl font-serif font-bold text-ceo-gold mb-2">Strategist</h2>
-                        <p className="text-sm text-gray-300 mb-4 leading-snug">Transforming visions into thriving brands</p>
-                        <div className="text-xs text-ceo-gold font-serif mb-4 space-y-1">
-                          <div>• Brand Strategy</div>
-                          <div>• Business Growth</div>
+                      <div className="bg-gradient-to-br from-black/90 via-amber-900/20 to-yellow-900/30 backdrop-blur-md rounded-xl p-8 max-w-sm border border-ceo-gold/50 shadow-2xl shadow-ceo-gold/30">
+                        <h2 className="text-3xl font-serif font-bold text-ceo-gold mb-3 tracking-wide">Entrepreneur</h2>
+                        <p className="text-sm text-gray-200 mb-6 leading-relaxed italic">Building scalable businesses through digital transformation and strategic innovation</p>
+                        <div className="text-xs text-ceo-gold font-serif mb-6 space-y-2 bg-black/40 p-4 rounded-lg border border-ceo-gold/20">
+                          <div className="flex items-center gap-2">
+                            <span className="text-ceo-gold">◆</span>
+                            <span className="text-gray-300">Serial Entrepreneurship</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-ceo-gold">◆</span>
+                            <span className="text-gray-300">Digital Transformation Consulting</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-ceo-gold">◆</span>
+                            <span className="text-gray-300">Brand Strategy & Business Growth</span>
+                          </div>
                         </div>
-                        <Button className="bg-ceo-gold text-white hover:bg-ceo-gold/80 font-serif font-semibold px-6 py-2 text-sm" onClick={() => onPersonaSelect("ceo")}>View Brands</Button>
+                        <Button className="bg-gradient-to-r from-ceo-gold to-yellow-400 text-black hover:from-ceo-gold/90 hover:to-yellow-400/90 font-serif font-bold px-8 py-3 text-sm rounded-lg shadow-lg hover:shadow-ceo-gold/50 transition-all duration-300 transform hover:scale-105" onClick={() => onPersonaSelect("ceo")}>
+                          Explore Brands
+                        </Button>
                       </div>
                     </motion.div>
                     <motion.nav
@@ -161,10 +194,19 @@ export function SplitLanding({ onPersonaSelect }: SplitLandingProps) {
                       transition={{ duration: 0.5, delay: 0.2 }}
                       className="absolute top-8 right-8 pointer-events-auto"
                     >
-                       <div className="flex items-center gap-6 bg-black/60 backdrop-blur-sm rounded-full px-6 py-3 border border-ceo-gold/30">
-                        <button onClick={() => onPersonaSelect("ceo")} className="text-ceo-gold hover:text-ceo-gold/80 font-serif text-sm transition-colors">Brands</button>
-                        <a href="#ceo-services" className="text-gray-300 hover:text-ceo-gold font-serif text-sm transition-colors">Services</a>
-                        <a href="#ceo-contact" className="text-gray-300 hover:text-ceo-gold font-serif text-sm transition-colors">Contact</a>
+                       <div className="flex items-center gap-6 bg-black/80 backdrop-blur-md rounded-full px-8 py-4 border border-ceo-gold/50 shadow-lg shadow-ceo-gold/20">
+                        <button onClick={() => onPersonaSelect("ceo")} className="text-ceo-gold hover:text-white hover:bg-ceo-gold/20 font-serif text-sm transition-all duration-300 px-3 py-1 rounded-full">Brands</button>
+                        <a href="/about" className="text-gray-300 hover:text-ceo-gold hover:bg-ceo-gold/10 font-serif text-sm transition-all duration-300 px-3 py-1 rounded-full">About</a>
+                        <a href="/learn" className="text-gray-300 hover:text-ceo-gold hover:bg-ceo-gold/10 font-serif text-sm transition-all duration-300 px-3 py-1 rounded-full">Learn</a>
+                        <a href="/blog" className="text-gray-300 hover:text-ceo-gold hover:bg-ceo-gold/10 font-serif text-sm transition-all duration-300 px-3 py-1 rounded-full">Blog</a>
+                        <a 
+                          href="https://emmanuelos-swart-dashboard.vercel.app" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-ceo-gold hover:text-white bg-ceo-gold/20 hover:bg-ceo-gold/40 font-serif text-sm font-semibold transition-all duration-300 px-4 py-2 rounded-full border border-ceo-gold/30"
+                        >
+                          SuperExplorer
+                        </a>
                       </div>
                     </motion.nav>
                   </>
@@ -179,21 +221,21 @@ export function SplitLanding({ onPersonaSelect }: SplitLandingProps) {
             <div className="w-24 h-24 mb-6 bg-white shadow-xl flex items-center justify-center border-4 border-white/80 backdrop-blur-sm rounded-full">
                 <img src={logoPng} alt="EO Logo" className="w-20 h-20 object-contain" />
             </div>
-            <h1 className="text-4xl font-bold mb-2 text-center">Emmanuel Ogugua</h1>
-            <p className="text-lg text-gray-300 mb-8 text-center">Developer & Business Strategist</p>
+            <h1 className="text-4xl font-bold mb-2 text-center">Emmanuel Chukwuka Ogugua</h1>
+            <p className="text-lg text-gray-300 mb-8 text-center">CyberSecurity Expert - Full-Stack Developer & Entrepreneur</p>
             
             <div className="w-full max-w-sm space-y-4">
                 <Button
                     className="w-full bg-matrix text-black hover:bg-matrix/80 font-mono font-semibold py-6 text-lg transition-transform transform hover:scale-105"
                     onClick={() => handleMobileClick("dev")}
                 >
-                    &lt;Dev Portfolio /&gt;
+                    &lt;CyberSec Portfolio /&gt;
                 </Button>
                 <Button
                     className="w-full bg-ceo-gold text-white hover:bg-ceo-gold/80 font-serif font-semibold py-6 text-lg transition-transform transform hover:scale-105"
                     onClick={() => handleMobileClick("ceo")}
                 >
-                    Brand Strategist
+                    Serial Entrepreneur
                 </Button>
             </div>
         </div>
