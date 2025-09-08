@@ -7,7 +7,6 @@ import { Development } from "@/pages/development";
 import { Consulting } from "@/pages/consulting";
 import { Training } from "@/pages/training";
 import NotFound from "@/pages/not-found";
-import "./App.css";
 
 function App() {
   return (
