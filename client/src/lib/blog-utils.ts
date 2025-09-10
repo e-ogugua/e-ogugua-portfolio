@@ -5,7 +5,7 @@ import { serialize } from 'next-mdx-remote/serialize';
 import { BlogPost } from '@/types';
 
 // Path is relative to the project root
-const contentDirectory = path.join(process.cwd(), 'content/blog');
+const contentDirectory = path.join(process.cwd(), '..', 'content/blog');
 
 
 export async function getBlogPosts(): Promise<BlogPost[]> {

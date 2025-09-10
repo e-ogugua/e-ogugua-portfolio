@@ -1,43 +1,13 @@
-import { useState } from "react";
 import { SplitLanding } from "@/components/split-landing";
 import { PortfolioSection } from "@/components/portfolio-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { ServicesSection } from "@/components/services-section";
 import { ContactForm } from "@/components/contact-form";
-import { DealForm } from "@/components/deal-form";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Github, Linkedin, Twitter } from "lucide-react";
 import { SOCIAL_LINKS } from "@/lib/constants";
 
 export default function Home() {
-  const [currentSection, setCurrentSection] = useState<"landing" | "portfolio" | "contact">("landing");
-  const [selectedPersona, setSelectedPersona] = useState<"dev" | "ceo" | null>(null);
-  const [selectedService, setSelectedService] = useState<any>(null);
-  const [showDealForm, setShowDealForm] = useState(false);
-
-  const scrollToSection = (section: "portfolio" | "contact") => {
-    const element = document.getElementById(section);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setCurrentSection(section);
-    }
-  };
-
-  const handlePersonaSelect = (persona: "dev" | "ceo") => {
-    setSelectedPersona(persona);
-    scrollToSection("portfolio");
-  };
-
-  const handleServiceSelect = (service: any) => {
-    setSelectedService(service);
-    setShowDealForm(true);
-  };
-
-  const handleCloseDealForm = () => {
-    setShowDealForm(false);
-    setSelectedService(null);
-  };
-
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case "github":
@@ -55,15 +25,15 @@ export default function Home() {
     <div className="min-h-screen">
       <ThemeToggle />
       
-      <SplitLanding onPersonaSelect={handlePersonaSelect} />
+      <SplitLanding />
       
-      <PortfolioSection selectedPersona={selectedPersona} />
+      <PortfolioSection selectedPersona="dev" />
       
       <TestimonialsSection />
       
-      <ServicesSection onServiceSelect={handleServiceSelect} />
+      <ServicesSection />
       
-      <ContactForm selectedPersona={selectedPersona} />
+      <ContactForm />
       
       {/* Footer */}
       <footer className="bg-black py-16">
@@ -152,13 +122,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-      
-      {showDealForm && (
-        <DealForm 
-          selectedService={selectedService}
-          onClose={handleCloseDealForm}
-        />
-      )}
     </div>
   );
 }
