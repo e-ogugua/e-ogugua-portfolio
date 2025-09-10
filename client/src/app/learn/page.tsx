@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,7 +19,9 @@ const learningPaths = [
       "Version control with Git",
       "Building your first project"
     ],
-    cta: "Start Learning"
+    cta: "Get Started",
+    color: "from-blue-500 to-blue-600",
+    hoverColor: "from-blue-600 to-blue-700"
   },
   {
     id: "intermediate",
@@ -34,7 +35,9 @@ const learningPaths = [
       "API development",
       "Cloud deployment"
     ],
-    cta: "Advance Now"
+    cta: "Level Up",
+    color: "from-purple-500 to-purple-600",
+    hoverColor: "from-purple-600 to-purple-700"
   },
   {
     id: "career",
@@ -48,7 +51,9 @@ const learningPaths = [
       "Salary negotiation",
       "Career path guidance"
     ],
-    cta: "Grow Your Career"
+    cta: "Grow Now",
+    color: "from-green-500 to-green-600",
+    hoverColor: "from-green-600 to-green-700"
   }
 ];
 
@@ -68,8 +73,11 @@ export default function LearnPage() {
     email: "",
     path: "",
     goals: "",
-    experience: ""
+    experience: "beginner"
   });
+  
+  // Track hover state for each card
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   const handlePathSelect = (pathId: string) => {
     setSelectedPath(pathId);
@@ -116,83 +124,97 @@ export default function LearnPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Learn & Grow with Me
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
             Choose your learning path and start your journey to mastery
+          </p>
+          <p className="text-gray-500 dark:text-gray-400">
+            Click on any card below to get started
           </p>
         </div>
 
         {!selectedPath ? (
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="grid md:grid-cols-3 gap-8 mb-16 px-4">
             {learningPaths.map((path) => (
-              <Card key={path.id} className="group hover:shadow-xl transition-shadow duration-300">
-                <CardHeader>
-                  <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                    {path.icon}
-                  </div>
-                  <CardTitle className="text-2xl">{path.title}</CardTitle>
-                  <CardDescription>{path.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
-                    <Clock className="w-4 h-4 mr-2" />
-                    <span>{path.duration}</span>
-                  </div>
-                  <ul className="space-y-2 mb-6">
-                    {path.features.map((feature, i) => (
-                      <li key={i} className="flex items-start">
-                        <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                        <span className="text-gray-700 dark:text-gray-300">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Button 
-                    onClick={() => handlePathSelect(path.id)}
-                    className="w-full group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 transition-all"
-                  >
-                    {path.cta}
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </CardFooter>
-              </Card>
+              <div 
+                key={path.id} 
+                className="relative group cursor-pointer"
+                onMouseEnter={() => setHoveredCard(path.id)}
+                onMouseLeave={() => setHoveredCard(null)}
+                onClick={() => handlePathSelect(path.id)}
+              >
+                <div className={`absolute inset-0.5 bg-gradient-to-r ${path.color} rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-300 ${hoveredCard === path.id ? 'scale-105' : ''}`}></div>
+                <Card className="relative bg-white dark:bg-gray-800 rounded-xl h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:border-transparent group-hover:-translate-y-1">
+                  <CardHeader className="flex-1">
+                    <div className={`p-3 bg-gradient-to-r ${path.color} rounded-full w-12 h-12 flex items-center justify-center mb-4 text-white`}>
+                      {path.icon}
+                    </div>
+                    <CardTitle className="text-2xl text-gray-900 dark:text-white">{path.title}</CardTitle>
+                    <CardDescription className="text-gray-600 dark:text-gray-300">{path.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-1">
+                    <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+                      <Clock className="w-4 h-4 mr-2" />
+                      <span>{path.duration}</span>
+                    </div>
+                    <ul className="space-y-3 mb-6">
+                      {path.features.map((feature, i) => (
+                        <li key={i} className="flex items-start">
+                          <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
+                          <span className="text-gray-700 dark:text-gray-300">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                  <CardFooter className="mt-auto">
+                    <div className={`w-full bg-gradient-to-r ${path.color} hover:${path.hoverColor} text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-lg flex items-center justify-center`}>
+                      {path.cta}
+                      <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </CardFooter>
+                </Card>
+              </div>
             ))}
           </div>
         ) : (
-          <div className="max-w-2xl mx-auto">
-            <Card>
-              <CardHeader>
-                <Button 
-                  variant="ghost" 
+          <div className="max-w-2xl mx-auto px-4">
+            <Card className="border-0 shadow-xl">
+              <CardHeader className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-t-lg">
+                <button 
                   onClick={() => setSelectedPath(null)}
-                  className="w-fit mb-4"
+                  className="w-fit mb-4 flex items-center text-white hover:text-gray-200 transition-colors"
                 >
-                  ← Back to all paths
-                </Button>
-                <CardTitle className="text-3xl">
+                  <ArrowRight className="w-5 h-5 mr-1 rotate-180" />
+                  Back to all paths
+                </button>
+                <CardTitle className="text-3xl text-white">
                   {learningPaths.find(p => p.id === selectedPath)?.title}
                 </CardTitle>
-                <CardDescription>
+                <p className="text-indigo-100">
                   {learningPaths.find(p => p.id === selectedPath)?.description}
-                </CardDescription>
+                </p>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-8">
+                <div className="mb-8 text-center">
+                  <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Let's Get Started</h3>
+                  <p className="text-gray-600 dark:text-gray-300">Share a few details and we'll be in touch</p>
+                </div>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Full Name <span className="text-red-500">*</span>
                     </label>
                     <Input
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Your name"
+                      placeholder="Your full name"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                       required
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Email Address <span className="text-red-500">*</span>
                     </label>
                     <Input
@@ -200,23 +222,23 @@ export default function LearnPage() {
                       type="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="you@example.com"
+                      placeholder="your.email@example.com"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                       required
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Current Experience Level <span className="text-red-500">*</span>
                     </label>
                     <select
                       name="experience"
                       value={formData.experience}
                       onChange={handleChange}
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-white dark:bg-gray-800"
                       required
                     >
-                      <option value="">Select your experience level</option>
                       <option value="beginner">Beginner (0-1 years)</option>
                       <option value="intermediate">Intermediate (1-3 years)</option>
                       <option value="advanced">Advanced (3+ years)</option>
@@ -224,46 +246,50 @@ export default function LearnPage() {
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Your Learning Goals <span className="text-red-500">*</span>
                     </label>
                     <Textarea
                       name="goals"
                       value={formData.goals}
                       onChange={handleChange}
-                      placeholder="What do you hope to achieve?"
+                      placeholder="What skills do you want to develop? What are your career aspirations?"
                       rows={4}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                       required
                     />
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       Be specific about your goals so we can tailor the experience for you.
                     </p>
                   </div>
                   
-                  <div className="pt-2">
-                    <Button 
+                  <div className="pt-4">
+                    <button 
                       type="submit" 
-                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90"
+                      className={`w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg flex items-center justify-center ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
                         <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                           Processing...
                         </>
                       ) : (
-                        'Start Learning Journey'
+                        <>
+                          Start Learning Journey
+                          <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                        </>
                       )}
-                    </Button>
-                    <p className="mt-2 text-xs text-center text-gray-500 dark:text-gray-400">
+                    </button>
+                    <p className="mt-4 text-sm text-center text-gray-500 dark:text-gray-400">
                       By continuing, you agree to our{' '}
-                      <Link href="/terms" className="text-blue-600 hover:underline dark:text-blue-400">
+                      <Link href="/terms" className="text-indigo-600 hover:underline dark:text-indigo-400 font-medium">
                         Terms of Service
                       </Link>{' '}
                       and{' '}
-                      <Link href="/privacy" className="text-blue-600 hover:underline dark:text-blue-400">
+                      <Link href="/privacy" className="text-indigo-600 hover:underline dark:text-indigo-400 font-medium">
                         Privacy Policy
-                      </Link>.
+                      </Link>
                     </p>
                   </div>
                 </form>
