@@ -43,3 +43,15 @@ coverage/
 *.db
 *.sqlite
 .vercel
+
+# Documentation (generated/development only)
+DEVELOPMENT.md
+DOCUMENTATION.md
+TROUBLESHOOTING.md
+
+# Local development files
+*.local.*
+
+# Test files
+*.test.*
+*.spec.*
