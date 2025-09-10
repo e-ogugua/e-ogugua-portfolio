@@ -1,0 +1,7 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="90" fill="#EC4899"/>
+  <path d="M50 120C50 100 70 100 100 100C130 100 150 100 150 120C150 140 130 140 100 140C70 140 50 140 50 120Z" fill="white"/>
+  <circle cx="75" cy="90" r="10" fill="white"/>
+  <circle cx="125" cy="90" r="10" fill="white"/>
+  <text x="100" y="170" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle">POSHPOULE</text>
+</svg>

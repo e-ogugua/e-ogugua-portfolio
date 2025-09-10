@@ -1,30 +1,139 @@
-import { Route, Router } from "wouter";
+import { Route, Router, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "@/hooks/use-theme";
+import { PersonaProvider, usePersona } from "@/contexts/persona-context";
+import { SiteHeader } from "@/components/site-header";
+// Using toast from sonner as an alternative
+import { Toaster as SonnerToaster } from "sonner";
+import { AnimatePresence, motion } from "framer-motion";
+
+// Import pages
 import Home from "@/pages/home";
-import { About } from "@/pages/about";
+import About from "@/pages/about-page";
+import Projects from "@/pages/projects";
+import Brands from "@/pages/brands";
 import Learn from "@/pages/learn";
 import Blog from "@/pages/blog";
-import { Development } from "@/pages/development";
-import { Consulting } from "@/pages/consulting";
-import { Training } from "@/pages/training";
+import BlogCategories from "@/pages/blog/categories";
+import BlogCategory from "@/pages/blog/category/[slug]";
+import BlogPost from "@/pages/blog/[slug]";
 import NotFound from "@/pages/not-found";
 
+// Import placeholder pages
+import { Development, Consulting, Training } from "@/pages/placeholder-pages";
+
 const queryClient = new QueryClient();
+
+// Layout component that includes the header and handles page transitions
+function Layout({ children }: { children: React.ReactNode }) {
+  const { persona, setPersona } = usePersona();
+  const [location] = useLocation();
+
+  return (
+    <div className="min-h-screen bg-background flex flex-col">
+      <SiteHeader persona={persona} onPersonaChange={setPersona} />
+      <main className="flex-1">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={location}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
+      </main>
+      <SonnerToaster position="top-right" richColors />
+    </div>
+  );
+}
+
+// Wrapper component to provide persona context to pages
+function PageWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <PersonaProvider>
+      <Layout>{children}</Layout>
+    </PersonaProvider>
+  );
+}
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="portfolio-theme">
       <QueryClientProvider client={queryClient}>
         <Router>
-          <Route path="/" component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/learn" component={Learn} />
-          <Route path="/blog" component={Blog} />
-          <Route path="/development" component={Development} />
-          <Route path="/consulting" component={Consulting} />
-          <Route path="/training" component={Training} />
-          <Route path="*" component={NotFound} />
+          <Route path="/">
+            <PageWrapper>
+              <Home />
+            </PageWrapper>
+          </Route>
+          <Route path="/about">
+            <PageWrapper>
+              <About />
+            </PageWrapper>
+          </Route>
+          <Route path="/projects">
+            <PageWrapper>
+              <Projects />
+            </PageWrapper>
+          </Route>
+          <Route path="/brands">
+            <PageWrapper>
+              <Brands />
+            </PageWrapper>
+          </Route>
+          <Route path="/learn">
+            <PageWrapper>
+              <Learn />
+            </PageWrapper>
+          </Route>
+          {/* Blog Routes */}
+          <Route path="/blog">
+            <PageWrapper>
+              <Blog />
+            </PageWrapper>
+          </Route>
+          <Route path="/blog/categories">
+            <PageWrapper>
+              <BlogCategories />
+            </PageWrapper>
+          </Route>
+          <Route path="/blog/category/:slug">
+            {(params) => (
+              <PageWrapper>
+                <BlogCategory slug={params.slug} />
+              </PageWrapper>
+            )}
+          </Route>
+          <Route path="/blog/:slug">
+            {(params) => (
+              <PageWrapper>
+                <BlogPost slug={params.slug} />
+              </PageWrapper>
+            )}
+          </Route>
+          <Route path="/development">
+            <PageWrapper>
+              <Development />
+            </PageWrapper>
+          </Route>
+          <Route path="/consulting">
+            <PageWrapper>
+              <Consulting />
+            </PageWrapper>
+          </Route>
+          <Route path="/training">
+            <PageWrapper>
+              <Training />
+            </PageWrapper>
+          </Route>
+          <Route path="*">
+            <PageWrapper>
+              <NotFound />
+            </PageWrapper>
+          </Route>
         </Router>
       </QueryClientProvider>
     </ThemeProvider>

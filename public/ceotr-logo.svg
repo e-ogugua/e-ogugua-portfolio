@@ -1,0 +1,6 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="20" fill="#3B82F6"/>
+  <path d="M50 80L100 50L150 80V120L100 150L50 120V80Z" fill="white"/>
+  <path d="M75 90L100 75L125 90V110L100 125L75 110V90Z" fill="#3B82F6"/>
+  <text x="100" y="170" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle">CEOTR</text>
+</svg>

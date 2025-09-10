@@ -1,0 +1,6 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="20" fill="#10B981"/>
+  <path d="M50 60L100 40L150 60V140L100 160L50 140V60Z" fill="white"/>
+  <text x="100" y="120" font-family="Arial" font-size="48" font-weight="bold" fill="#10B981" text-anchor="middle">E</text>
+  <text x="100" y="180" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle">EMMDRA</text>
+</svg>

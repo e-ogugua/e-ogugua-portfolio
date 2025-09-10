@@ -1,0 +1,7 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="20" fill="#8B5CF6"/>
+  <path d="M100 50L125 80H75L100 50Z" fill="white"/>
+  <path d="M75 80V130H125V80H75Z" fill="white"/>
+  <path d="M75 130L100 150L125 130" stroke="white" stroke-width="10"/>
+  <text x="100" y="170" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle">JEPLIGOM MINISTRY</text>
+</svg>
