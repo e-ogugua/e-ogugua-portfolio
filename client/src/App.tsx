@@ -148,12 +148,6 @@ function App() {
               <Training />
             </PageWrapper>
           </Route>
-          {/* Redirect to home page instead of showing 404 */}
-          <Route path="*">
-            <PageWrapper>
-              <Home />
-            </PageWrapper>
-          </Route>
         </Router>
       </QueryClientProvider>
     </ThemeProvider>

@@ -1,11 +1,18 @@
-import { useEffect } from 'react';
+import React from 'react';
 import dynamic from 'next/dynamic';
 
-// Dynamically import the App component from the client
-const ClientApp = dynamic(() => import('../client/src/App'), {
-  ssr: false,
-});
+// Disable SSR for the client app to prevent hydration issues
+const ClientApp = dynamic(
+  () => import('../client/src/App'),
+  { ssr: false, loading: () => <div>Loading...</div> }
+);
 
-export default function Home() {
+// This is a client-side only app
+const Home = () => {
   return <ClientApp />;
-}
+};
+
+// Disable SSR for this page
+Home.getInitialProps = async () => ({});
+
+export default Home;
