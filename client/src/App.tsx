@@ -13,12 +13,9 @@ import Home from "@/pages/home";
 import About from "@/pages/about-page";
 import Projects from "@/pages/projects";
 import Brands from "@/pages/brands";
-import Learn from "@/pages/learn";
-import Blog from "@/pages/blog";
-import BlogCategories from "@/pages/blog/categories";
-import BlogCategory from "@/pages/blog/category/[slug]";
-import BlogPost from "@/pages/blog/[slug]";
 import NotFound from "@/pages/not-found";
+
+// Note: Blog and Learn routes are now handled by the App Router
 
 // Import placeholder pages
 import { Development, Consulting, Training } from "@/pages/placeholder-pages";
@@ -102,36 +99,6 @@ function App() {
             <PageWrapper>
               <Brands />
             </PageWrapper>
-          </Route>
-          <Route path="/learn">
-            <PageWrapper>
-              <Learn />
-            </PageWrapper>
-          </Route>
-          {/* Blog Routes */}
-          <Route path="/blog">
-            <PageWrapper>
-              <Blog />
-            </PageWrapper>
-          </Route>
-          <Route path="/blog/categories">
-            <PageWrapper>
-              <BlogCategories />
-            </PageWrapper>
-          </Route>
-          <Route path="/blog/category/:slug">
-            {(params) => (
-              <PageWrapper>
-                <BlogCategory slug={params.slug} />
-              </PageWrapper>
-            )}
-          </Route>
-          <Route path="/blog/:slug">
-            {(params) => (
-              <PageWrapper>
-                <BlogPost slug={params.slug} />
-              </PageWrapper>
-            )}
           </Route>
           <Route path="/development">
             <PageWrapper>

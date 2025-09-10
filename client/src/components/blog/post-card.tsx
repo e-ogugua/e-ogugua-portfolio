@@ -1,105 +1,107 @@
-import { motion } from "framer-motion";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
-import { Link } from "wouter";
+import Link from 'next/link';
+import { Calendar, Clock, Tag as TagIcon } from 'lucide-react';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
+import { Badge } from '../ui/badge';
 
 interface PostCardProps {
-  id: string;
+  slug: string;
   title: string;
-  excerpt: string;
-  category: string;
-  publishDate: string;
-  readTime: string;
-  image: string;
+  date: string;
+  description: string;
   tags: string[];
+  readTime: number;
+  image?: string;
   featured?: boolean;
 }
 
 export function PostCard({
-  id,
+  slug,
   title,
-  excerpt,
-  category,
-  publishDate,
+  date,
+  description,
+  tags = [],
   readTime,
   image,
-  tags,
-  featured = false
+  featured = false,
 }: PostCardProps) {
-  const formattedDate = new Date(publishDate).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+  const formattedDate = format(new Date(date), 'MMMM d, yyyy');
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className={`group ${featured ? 'col-span-1 md:col-span-2' : ''}`}
+    <article
+      className={cn(
+        'group relative flex flex-col overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm transition-all hover:shadow-md',
+        featured && 'md:col-span-2'
+      )}
     >
-      <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-lg dark:hover:shadow-slate-800/50">
-        <div className={`flex flex-col ${featured ? 'md:flex-row' : 'flex-col'}`}>
-          <div className={`${featured ? 'md:w-1/2' : 'w-full'}`}>
-            <img
-              src={image}
-              alt={title}
-              className="w-full h-48 md:h-full object-cover"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.onerror = null;
-                target.src = 'https://via.placeholder.com/600x400';
-              }}
-            />
+      {image && (
+        <div className="relative h-48 overflow-hidden">
+          <img
+            src={image}
+            alt={title}
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
+      )}
+      
+      <div className="flex flex-1 flex-col p-6">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+          <div className="flex items-center gap-1">
+            <Calendar className="h-4 w-4" />
+            <span>{formattedDate}</span>
           </div>
-          <div className={`p-6 ${featured ? 'md:w-1/2' : ''}`}>
-            <div className="flex items-center gap-2 mb-3">
-              <Badge variant="secondary">{category}</Badge>
-              {featured && (
-                <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
-                  Featured
-                </Badge>
-              )}
-            </div>
-            <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-              {title}
-            </h3>
-            <p className="text-muted-foreground mb-4">{excerpt}</p>
-            
-            <div className="flex items-center text-sm text-muted-foreground mb-4 gap-4">
-              <div className="flex items-center gap-1">
-                <Calendar className="w-4 h-4" />
-                <span>{formattedDate}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Clock className="w-4 h-4" />
-                <span>{readTime}</span>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap gap-2 mb-4">
-              {tags.slice(0, 3).map((tag) => (
-                <Badge key={tag} variant="outline" className="text-xs">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-
-            <Button 
-              asChild 
-              variant="ghost" 
-              className="group-hover:underline p-0 h-auto"
-            >
-              <Link href={`/blog/${id}`}>
-                Read more <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
+          <span>•</span>
+          <div className="flex items-center gap-1">
+            <Clock className="h-4 w-4" />
+            <span>{readTime} min read</span>
           </div>
         </div>
-      </Card>
-    </motion.article>
+        
+        <h3 className="mb-2 text-xl font-semibold leading-tight">
+          <Link href={`/blog/${slug}`} className="after:absolute after:inset-0">
+            {title}
+          </Link>
+        </h3>
+        
+        <p className="mb-4 flex-1 text-muted-foreground">{description}</p>
+        
+        {tags.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {tags.slice(0, 3).map((tag) => (
+              <Badge key={tag} variant="secondary" className="text-xs">
+                {tag}
+              </Badge>
+            ))}
+            {tags.length > 3 && (
+              <Badge variant="outline" className="text-xs">
+                +{tags.length - 3} more
+              </Badge>
+            )}
+          </div>
+        )}
+        
+        <div className="mt-4 pt-4 border-t">
+          <Link 
+            href={`/blog/${slug}`}
+            className="inline-flex items-center text-sm font-medium text-primary hover:underline"
+          >
+            Read more
+            <svg
+              className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </Link>
+        </div>
+      </div>
+    </article>
   );
 }

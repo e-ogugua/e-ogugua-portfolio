@@ -20,8 +20,7 @@ const learningPaths = [
       "Building your first project"
     ],
     cta: "Get Started",
-    color: "from-blue-500 to-blue-600",
-    hoverColor: "from-blue-600 to-blue-700"
+    color: "blue"
   },
   {
     id: "intermediate",
@@ -36,8 +35,7 @@ const learningPaths = [
       "Cloud deployment"
     ],
     cta: "Level Up",
-    color: "from-purple-500 to-purple-600",
-    hoverColor: "from-purple-600 to-purple-700"
+    color: "purple"
   },
   {
     id: "career",
@@ -52,8 +50,7 @@ const learningPaths = [
       "Career path guidance"
     ],
     cta: "Grow Now",
-    color: "from-green-500 to-green-600",
-    hoverColor: "from-green-600 to-green-700"
+    color: "green"
   }
 ];
 
@@ -75,9 +72,6 @@ export default function LearnPage() {
     goals: "",
     experience: "beginner"
   });
-  
-  // Track hover state for each card
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   const handlePathSelect = (pathId: string) => {
     setSelectedPath(pathId);
@@ -94,28 +88,37 @@ export default function LearnPage() {
     setIsSubmitting(true);
     
     try {
-      // Here you would typically send the form data to your API or email service
-      console.log('Learning path registration:', formData);
-      
       // Simulate API call
+      console.log('Form submitted:', formData);
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      toast.success('Registration successful! Check your email for next steps.');
+      // Show success message
+      toast.success('Registration successful!', {
+        description: 'We\'ll be in touch soon to discuss your learning journey.'
+      });
+      
+      // Reset form
       setFormData({
         name: "",
         email: "",
-        path: "",
+        path: selectedPath || "",
         goals: "",
-        experience: ""
+        experience: "beginner"
       });
+      
+      // Go back to path selection
       setSelectedPath(null);
     } catch (error) {
       console.error('Error submitting form:', error);
-      toast.error('Something went wrong. Please try again.');
+      toast.error('Something went wrong', {
+        description: 'Please try again or contact support if the issue persists.'
+      });
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const selectedPathData = learningPaths.find(path => path.id === selectedPath);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
@@ -135,14 +138,12 @@ export default function LearnPage() {
         {!selectedPath ? (
           <div className="grid md:grid-cols-3 gap-8 mb-16 px-4">
             {learningPaths.map((path) => (
-              <div 
-                key={path.id} 
-                className="relative group cursor-pointer"
-                onMouseEnter={() => setHoveredCard(path.id)}
-                onMouseLeave={() => setHoveredCard(null)}
+              <div
+                key={path.id}
+                className={`relative rounded-xl overflow-hidden border-2 border-transparent transition-all duration-300 hover:scale-105 hover:shadow-lg hover:border-${path.color}-500 cursor-pointer`}
                 onClick={() => handlePathSelect(path.id)}
               >
-                <div className={`absolute inset-0.5 bg-gradient-to-r ${path.color} rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-300 ${hoveredCard === path.id ? 'scale-105' : ''}`}></div>
+                <div className={`absolute inset-0.5 bg-gradient-to-r ${path.color} rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-300 ${selectedPath === path.id ? 'scale-105' : ''}`}></div>
                 <Card className="relative bg-white dark:bg-gray-800 rounded-xl h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:border-transparent group-hover:-translate-y-1">
                   <CardHeader className="flex-1">
                     <div className={`p-3 bg-gradient-to-r ${path.color} rounded-full w-12 h-12 flex items-center justify-center mb-4 text-white`}>
@@ -165,12 +166,13 @@ export default function LearnPage() {
                       ))}
                     </ul>
                   </CardContent>
-                  <CardFooter className="mt-auto">
-                    <div className={`w-full bg-gradient-to-r ${path.color} hover:${path.hoverColor} text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-lg flex items-center justify-center`}>
-                      {path.cta}
-                      <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </CardFooter>
+                  <button
+                    type="button"
+                    className={`w-full bg-${path.color}-500 hover:bg-${path.color}-600 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center`}
+                  >
+                    {path.cta}
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </button>
                 </Card>
               </div>
             ))}
@@ -179,18 +181,18 @@ export default function LearnPage() {
           <div className="max-w-2xl mx-auto px-4">
             <Card className="border-0 shadow-xl">
               <CardHeader className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-t-lg">
-                <button 
+                <button
+                  type="button"
                   onClick={() => setSelectedPath(null)}
-                  className="w-fit mb-4 flex items-center text-white hover:text-gray-200 transition-colors"
+                  className="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium py-2 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
-                  <ArrowRight className="w-5 h-5 mr-1 rotate-180" />
                   Back to all paths
                 </button>
                 <CardTitle className="text-3xl text-white">
-                  {learningPaths.find(p => p.id === selectedPath)?.title}
+                  {selectedPathData?.title}
                 </CardTitle>
                 <p className="text-indigo-100">
-                  {learningPaths.find(p => p.id === selectedPath)?.description}
+                  {selectedPathData?.description}
                 </p>
               </CardHeader>
               <CardContent className="pt-8">
@@ -264,21 +266,20 @@ export default function LearnPage() {
                   </div>
                   
                   <div className="pt-4">
-                    <button 
-                      type="submit" 
-                      className={`w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg flex items-center justify-center ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
+                    <button
+                      type="submit"
                       disabled={isSubmitting}
+                      className={`w-full bg-${selectedPathData?.color}-500 hover:bg-${selectedPathData?.color}-600 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center ${
+                        isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+                      }`}
                     >
                       {isSubmitting ? (
                         <>
-                          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                           Processing...
                         </>
                       ) : (
-                        <>
-                          Start Learning Journey
-                          <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </>
+                        `Start ${selectedPathData?.title}`
                       )}
                     </button>
                     <p className="mt-4 text-sm text-center text-gray-500 dark:text-gray-400">
@@ -315,16 +316,13 @@ export default function LearnPage() {
             <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
               Take our 2-minute assessment and we'll recommend the best learning path based on your goals and experience.
             </p>
-            <Button 
-              asChild
-              variant="outline"
-              className="border-2 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+            <Link 
+              href="/assessment"
+              className="inline-flex items-center justify-center px-6 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium transition-colors"
             >
-              <Link href="/assessment">
-                Take Assessment
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
-            </Button>
+              Take Assessment
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
           </div>
         </div>
       </div>

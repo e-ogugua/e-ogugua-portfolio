@@ -27,15 +27,11 @@
     "allowImportingTsExtensions": true,
     "moduleResolution": "bundler",
     "baseUrl": ".",
-    "typeRoots": [
-      "./node_modules/@types",
-      "./client/src/types"
-    ],
-    "types": ["node"],
     "paths": {
-      "@/*": [
-        "./client/src/*"
-      ],
+      "@/*": ["./client/src/*"],
+      "@/components/*": ["./client/src/components/*"],
+      "@/lib/*": ["./client/src/lib/*"],
+      "@/types/*": ["./client/src/types/*"],
       "@shared/*": [
         "./shared/*"
       ]

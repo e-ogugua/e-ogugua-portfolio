@@ -1,36 +1,74 @@
-import { blogPosts } from "@/pages/blog";
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
+import { serialize } from 'next-mdx-remote/serialize';
+import { BlogPost } from '@/types';
 
-export interface BlogCategory {
-  slug: string;
-  name: string;
-  count: number;
-}
+// Path is relative to the project root
+const contentDirectory = path.join(process.cwd(), 'content/blog');
 
-export function getAllCategories(): BlogCategory[] {
-  const categoryMap = new Map<string, number>();
+
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  console.log('Content directory path:', contentDirectory);
+  console.log('Directory exists:', fs.existsSync(contentDirectory));
   
-  // Count posts per category
-  blogPosts.forEach(post => {
-    const count = categoryMap.get(post.category) || 0;
-    categoryMap.set(post.category, count + 1);
-  });
+  try {
+    const fileNames = fs.readdirSync(contentDirectory);
+    console.log('Found files:', fileNames);
+    
+    const allPostsData = await Promise.all(
+      fileNames.map(async (fileName) => {
+        const slug = fileName.replace(/\.mdx?$/, '');
+        return await getPostBySlug(slug);
+      })
+    );
 
-  // Convert to array of category objects
-  return Array.from(categoryMap.entries()).map(([slug, count]) => ({
+    // Sort posts by date
+    return allPostsData.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+  } catch (error) {
+    console.error('Error in getBlogPosts:', error);
+    throw error;
+  }
+}
+
+export async function getPostBySlug(slug: string): Promise<BlogPost> {
+  const fullPath = path.join(contentDirectory, `${slug}.mdx`);
+  const fileContents = fs.readFileSync(fullPath, 'utf8');
+  const { data, content } = matter(fileContents);
+  
+  // Calculate read time (average reading speed: 200 words per minute)
+  const wordsPerMinute = 200;
+  const wordCount = content.split(/\s+/).length;
+  const readTime = Math.ceil(wordCount / wordsPerMinute);
+
+  return {
     slug,
-    name: slug.charAt(0).toUpperCase() + slug.slice(1), // Capitalize first letter
-    count
-  }));
+    title: data.title || 'Untitled',
+    date: data.date || new Date().toISOString(),
+    description: data.description || '',
+    tags: data.tags || [],
+    content,
+    readTime,
+    author: data.author || 'Emmanuel Ogugua',
+    image: data.image || '/default-blog-image.jpg',
+    featured: data.featured || false,
+  };
 }
 
-export function getPostsByCategory(categorySlug: string) {
-  return blogPosts.filter(post => 
-    post.category.toLowerCase() === categorySlug.toLowerCase()
-  );
+export async function getTags(): Promise<string[]> {
+  const posts = await getBlogPosts();
+  const tags = new Set<string>();
+  
+  posts.forEach((post) => {
+    post.tags.forEach((tag) => tags.add(tag));
+  });
+  
+  return Array.from(tags).sort();
 }
 
-export function getCategoryName(slug: string): string {
-  return slug.split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+export async function getFeaturedPosts(limit: number = 2): Promise<BlogPost[]> {
+  const posts = await getBlogPosts();
+  return posts.filter(post => post.featured).slice(0, limit);
 }
