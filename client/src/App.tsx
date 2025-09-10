@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header";
 // Using toast from sonner as an alternative
 import { Toaster as SonnerToaster } from "sonner";
 import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
 
 // Import pages
 import Home from "@/pages/home";
@@ -28,6 +29,24 @@ const queryClient = new QueryClient();
 function Layout({ children }: { children: React.ReactNode }) {
   const { persona, setPersona } = usePersona();
   const [location] = useLocation();
+  
+  // Fix for 404 page appearing below footer
+  useEffect(() => {
+    // Remove any 404 elements that might be incorrectly rendered
+    const cleanup404Elements = () => {
+      const notFoundElements = document.querySelectorAll('.min-h-screen.w-full.flex.items-center.justify-center.bg-gray-50');
+      if (notFoundElements.length > 1) {
+        // Keep only the first one if it's part of the main content
+        for (let i = 1; i < notFoundElements.length; i++) {
+          notFoundElements[i].remove();
+        }
+      }
+    };
+    
+    cleanup404Elements();
+    // Run cleanup on location change
+    return () => cleanup404Elements();
+  }, [location]);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -129,9 +148,10 @@ function App() {
               <Training />
             </PageWrapper>
           </Route>
+          {/* Redirect to home page instead of showing 404 */}
           <Route path="*">
             <PageWrapper>
-              <NotFound />
+              <Home />
             </PageWrapper>
           </Route>
         </Router>
