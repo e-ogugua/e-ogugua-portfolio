@@ -4,9 +4,16 @@ e-ogugua-portfolio - Part of the EmmanuelOS ecosystem
 
 ## Features
 
-- Feature 1
-- Feature 2
-- Feature 3
+- Modern, responsive portfolio website
+- Dark/light theme support
+- Multiple persona views
+- Blog with categories
+- Project showcase
+- Custom 404 page with auto-redirect
+
+## Documentation
+
+For detailed information about the project structure, routing system, and recent changes, please refer to the [DOCUMENTATION.md](./DOCUMENTATION.md) file.
 
 ## Tech Stack
 
