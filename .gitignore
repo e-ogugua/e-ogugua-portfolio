@@ -44,9 +44,8 @@ coverage/
 *.sqlite
 .vercel
 
-# Documentation (generated/development only)
+# Development documentation
 DEVELOPMENT.md
-DOCUMENTATION.md
 TROUBLESHOOTING.md
 
 # Local development files

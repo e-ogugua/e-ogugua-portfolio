@@ -1,20 +1,32 @@
-import Hero from '@/components/hero';
-import Projects from '@/components/projects';
-import Brands from '@/components/brands';
-import Services from '@/components/services';
-import About from '@/components/about';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <Hero />
-      <About />
-      <Projects />
-      <Brands />
-      <Services />
+      {/* Hero Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+            Emmanuel Ogugua
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+            Full-Stack Developer & Technical Leader
+          </p>
+          <div className="mt-10 flex justify-center gap-4">
+            <Button size="lg">
+              View My Work
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="lg">
+              Contact Me
+            </Button>
+          </div>
+        </div>
+      </section>
       
       {/* Footer */}
-      <footer className="bg-background border-t py-12">
+      <footer className="bg-background border-t py-12 mt-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-4">Let's Work Together</h2>
@@ -38,6 +50,3 @@ export default function Home() {
     </main>
   );
 }
-
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';

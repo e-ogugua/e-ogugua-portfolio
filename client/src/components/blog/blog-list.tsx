@@ -1,4 +1,4 @@
-import { BlogPost } from '@/lib/blog-utils';
+import { BlogPost } from '@/types';
 import { PostCard } from './post-card';
 
 interface BlogListProps {

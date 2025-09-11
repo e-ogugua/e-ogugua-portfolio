@@ -48,7 +48,7 @@ export default async function BlogPostPage({ params }: Props) {
   const formattedDate = format(new Date(post.date), 'MMMM d, yyyy');
 
   return (
-    <PageLayout title={post.title}>
+    <PageLayout title={post.title} description={post.description || 'Blog post'}>
       <article className="prose prose-slate mx-auto dark:prose-invert lg:prose-lg">
         <div className="mb-8 space-y-4">
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">

@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
-import { BlogPost } from '@/types';
+import { BlogPost } from '@/types/index';
 
 // Path is relative to the project root
 const contentDirectory = path.join(process.cwd(), '..', 'content/blog');
@@ -71,4 +71,36 @@ export async function getTags(): Promise<string[]> {
 export async function getFeaturedPosts(limit: number = 2): Promise<BlogPost[]> {
   const posts = await getBlogPosts();
   return posts.filter(post => post.featured).slice(0, limit);
+}
+
+export async function getAllCategories(): Promise<string[]> {
+  const posts = await getBlogPosts();
+  const categories = new Set<string>();
+  
+  posts.forEach((post) => {
+    if (post.tags && Array.isArray(post.tags)) {
+      post.tags.forEach((tag) => categories.add(tag));
+    }
+  });
+  
+  return Array.from(categories).sort();
+}
+
+export async function getPostsByCategory(categorySlug: string): Promise<BlogPost[]> {
+  const allPosts = await getBlogPosts();
+  const categoryName = getCategoryName(categorySlug);
+  
+  return allPosts.filter(post => 
+    post.tags?.some(tag => 
+      tag.toLowerCase() === categoryName.toLowerCase()
+    )
+  );
+}
+
+export function getCategoryName(categorySlug: string): string {
+  // Convert slug back to display name (e.g., 'web-development' -> 'Web Development')
+  return categorySlug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }

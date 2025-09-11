@@ -1,51 +1,79 @@
 import { useParams } from "wouter";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { blogPosts } from "@/pages/blog";
+import { getBlogPosts, getPostBySlug } from "@/lib/blog-utils";
 import { Link } from "wouter";
 import { Helmet } from 'react-helmet-async';
 import { BlogPostMeta } from "@/components/seo/blog-post-meta";
 import { CommentsProvider } from "@/contexts/comments-context";
 import { CommentsSection } from "@/components/comments/comments-section";
+import type { BlogPost } from "@/types";
 
 interface BlogPostProps {
   slug: string;
 }
 
 export default function BlogPost({ slug }: BlogPostProps) {
-  
-  // Find the blog post with the matching slug
-  const post = useMemo(() => {
-    return blogPosts.find(p => p.id === slug);
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const postData = await getPostBySlug(slug);
+        setPost(postData);
+        
+        // Fetch related posts
+        const allPosts = await getBlogPosts();
+        const related = allPosts
+          .filter(p => p.slug !== postData.slug && p.tags.some(tag => postData.tags.includes(tag)))
+          .slice(0, 3);
+        setRelatedPosts(related);
+      } catch (err) {
+        console.error('Error fetching blog post:', err);
+        setError('Failed to load blog post');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [slug]);
 
-  if (!post) {
+  if (loading) {
+    return <div className="container mx-auto px-4 py-16">Loading...</div>;
+  }
+
+  if (error || !post) {
     return (
-      <div className="text-center py-20">
-        <h1 className="text-4xl font-bold mb-4">Post Not Found</h1>
-        <p className="text-muted-foreground mb-8">The requested blog post could not be found.</p>
-        <Button asChild>
-          <Link href="/blog">
+      <div className="container mx-auto px-4 py-16">
+        <h1 className="text-2xl font-bold">{error || 'Post not found'}</h1>
+        <Link href="/blog">
+          <Button variant="link" className="mt-4 pl-0">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Blog
-          </Link>
-        </Button>
+            Back to blog
+          </Button>
+        </Link>
       </div>
     );
   }
 
-  const formattedDate = format(new Date(post.publishDate), 'MMMM d, yyyy');
+  const formattedDate = format(new Date(post.date), 'MMMM d, yyyy');
+  const readingTime = post.readTime || Math.ceil((post.content || '').split(/\s+/).length / 200);
 
   return (
     <>
       <BlogPostMeta 
         title={post.title}
-        excerpt={post.excerpt}
-        slug={post.id}
+        excerpt={post.description}
+        slug={post.slug}
         image={post.image}
-        publishDate={post.publishDate}
+        publishDate={post.date}
         author={post.author}
         tags={post.tags}
       />
@@ -182,13 +210,10 @@ export default function BlogPost({ slug }: BlogPostProps) {
         <div className="mt-12 pt-8 border-t border-border/30">
           <h3 className="text-lg font-semibold mb-4">Read Next</h3>
           <div className="grid md:grid-cols-2 gap-6">
-            {blogPosts
-              .filter(p => p.id !== post.id)
-              .slice(0, 2)
-              .map(post => (
+            {relatedPosts.map((post: BlogPost) => (
                 <Link 
-                  key={post.id} 
-                  href={`/blog/${post.id}`}
+                  key={post.slug} 
+                  href={`/blog/${post.slug}`}
                   className="block group"
                 >
                   <div className="p-4 rounded-lg hover:bg-muted/30 transition-colors">
@@ -196,7 +221,7 @@ export default function BlogPost({ slug }: BlogPostProps) {
                       {post.title}
                     </h4>
                     <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                      {post.excerpt}
+                      {post.description}
                     </p>
                   </div>
                 </Link>
