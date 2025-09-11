@@ -1,15 +1,21 @@
 # e-ogugua-portfolio
 
-e-ogugua-portfolio - Part of the EmmanuelOS ecosystem
+A modern, responsive portfolio website with a powerful blog system, built with Next.js and TypeScript.
 
 ## Features
 
-- Modern, responsive portfolio website
-- Dark/light theme support
-- Multiple persona views
-- Blog with categories
-- Project showcase
-- Custom 404 page with auto-redirect
+- 🚀 Modern, responsive portfolio website
+- 🌓 Dark/light theme support
+- 📝 Advanced blog system with:
+  - Markdown/MDX support
+  - Categories and tags
+  - Related posts
+  - Reading time calculation
+  - SEO optimization
+- 🎨 Multiple persona views
+- 🏗️ Project showcase
+- ⚡ Performance optimized
+- 🔍 SEO friendly
 
 ## Documentation
 
@@ -17,11 +23,14 @@ For detailed information about the project structure, routing system, and recent
 
 ## Tech Stack
 
-- Next.js 14
-- React 18
-- TypeScript
-- Tailwind CSS
-- Vercel (Deployment)
+- ⚡ Next.js 14 (App Router)
+- 🚀 React 18
+- 🔷 TypeScript
+- 🎨 Tailwind CSS
+- 📝 MDX for content
+- 🔍 Next SEO
+- 📱 Fully responsive design
+- 🚀 Vercel (Deployment)
 
 ## Getting Started
 
@@ -81,11 +90,22 @@ This application is deployed on Vercel. Any push to the `main` branch will trigg
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env.local file:
+Create a `.env.local` file in the root directory with the following variables:
 
-```
+```env
+# App
 NEXT_PUBLIC_APP_NAME="e-ogugua-portfolio"
-NEXT_PUBLIC_APP_URL="https://e-ogugua-portfolio.vercel.app"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+
+# Database (if applicable)
+# DATABASE_URL=your_database_url
+
+# Authentication (if applicable)
+# NEXTAUTH_SECRET=your_secret_here
+# NEXTAUTH_URL=http://localhost:3000
+
+# Google Analytics (optional)
+# NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
 ## Contributing
